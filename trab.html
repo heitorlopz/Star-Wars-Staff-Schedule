@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<!-- Criado com Emmet (HTML-5) -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Trabalho de PO</title>
+</head>
+
+<body>
+    <div id="container">
+        <div class="panel">
+            <h1>O IMPÉRIO PRECISA DE SUA AJUDA!</h1>
+            <h2>Vice-Comandante, Nossa inteligência interceptou a rede de comunicação dos rebeldes, e descobrimos um contrabando em massa de armas ocorrendo em nosso setor!
+            </h2>
+            <h3>Temos à nossa disposição um supercomputador capaz de realizar cálculos 100% precisos de staff scheduling, que serão usados para organizar quantos TIE-Fighters serão enviados para cada operação. Porém, há dois problemas: o primeiro é que possuímos
+                poucos TIE-Fighters, e portanto precisaremos pedir um número de reforços para o Destroyer mais próximo. O segundo é a distância que estamos do mesmo. Há um total de 7 missões, e TIE-Fighters só possuem recursos para que possam ir em, no
+                máximo, 4, mas duas missões consomem o dobro de recursos. Os TIE-Fighters custarão recursos externos que precisaremos pagar, e portanto precisamos minimizar o custo dos reforços que receberemos. Esses são os números específicos de TIE-Fighters
+                necessários para cada missão, e marque a checkbox para identificar quais custarão o dobro:
+            </h3> <br> Missão 1: <input type="number" id="TF_m1" onchange="numTF_M1()"> <input type="checkbox" id="FDS_1" onchange="FDS_1_Change()"> <br> Missão 2: <input type="number" id="TF_m2" onchange="numTF_M2()"> <input type="checkbox" id="FDS_2"
+                onchange="FDS_2_Change()"> <br> Missão 3:
+            <input type="number" id="TF_m3" onchange="numTF_M3()"> <input type="checkbox" id="FDS_3" onchange="FDS_3_Change()"> <br> Missão 4: <input type="number" id="TF_m4" onchange="numTF_M4()"> <input type="checkbox" id="FDS_4" onchange="FDS_4_Change()">            <br> Missão 5: <input type="number" id="TF_m5" onchange="numTF_M5()"> <input type="checkbox" id="FDS_5" onchange="FDS_5_Change()"> <br> Missão 6: <input type="number" id="TF_m6" onchange="numTF_M6()"> <input type="checkbox" id="FDS_6" onchange="FDS_6_Change()">            <br> Missão 7: <input type="number" id="TF_m7" onchange="numTF_M7()"> <input type="checkbox" id="FDS_7" onchange="FDS_7_Change()"> <br>
+            <h3>Agora, execute o programa do supercomputador para saber quantos TIE-Fighters de reforços precisaremos!</h3> <br>
+            <button onclick="executar()" class="button">Executar</button>
+        </div>
+        <div class="panel" id="resultados">
+
+        </div>
+    </div>
+</body>
+<script>
+    //Números de TIE-Fighters (Restrições):
+    var TF_m1 = 0;
+    var TF_m2 = 0;
+    var TF_m3 = 0;
+    var TF_m4 = 0;
+    var TF_m5 = 0;
+    var TF_m6 = 0;
+    var TF_m7 = 0;
+
+    //Fins de semana
+    var FDS_1 = false;
+    var FDS_2 = false;
+    var FDS_3 = false;
+    var FDS_4 = false;
+    var FDS_5 = false;
+    var FDS_6 = false;
+    var FDS_7 = false;
+
+    var solucao = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    //Tabela
+    var table;
+
+    function numTF_M1() {
+        TF_m1 = document.getElementById('TF_m1').value;
+    }
+
+    function numTF_M2() {
+        TF_m2 = document.getElementById('TF_m2').value;
+    }
+
+    function numTF_M3() {
+        TF_m3 = document.getElementById('TF_m3').value;
+    }
+
+    function numTF_M4() {
+        TF_m4 = document.getElementById('TF_m4').value;
+    }
+
+    function numTF_M5() {
+        TF_m5 = document.getElementById('TF_m5').value;
+    }
+
+    function numTF_M6() {
+        TF_m6 = document.getElementById('TF_m6').value;
+    }
+
+    function numTF_M7() {
+        TF_m7 = document.getElementById('TF_m7').value;
+    }
+
+    function FDS_1_Change() {
+        if (FDS_1 == true) {
+            FDS_1 = false;
+        } else {
+            FDS_1 = true;
+        }
+    }
+
+    function FDS_2_Change() {
+        if (FDS_2 == true) {
+            FDS_2 = false;
+        } else {
+            FDS_2 = true;
+        }
+    }
+
+    function FDS_3_Change() {
+        if (FDS_3 == true) {
+            FDS_3 = false;
+        } else {
+            FDS_3 = true;
+        }
+    }
+
+    function FDS_4_Change() {
+        if (FDS_4 == true) {
+            FDS_4 = false;
+        } else {
+            FDS_4 = true;
+        }
+    }
+
+    function FDS_5_Change() {
+        if (FDS_5 == true) {
+            FDS_5 = false;
+        } else {
+            FDS_5 = true;
+        }
+    }
+
+    function FDS_6_Change() {
+        if (FDS_6 == true) {
+            FDS_6 = false;
+        } else {
+            FDS_6 = true;
+        }
+    }
+
+    function FDS_7_Change() {
+        if (FDS_7 == true) {
+            FDS_7 = false;
+        } else {
+            FDS_7 = true;
+        }
+    }
+
+    function executar() {
+
+        var FDSArr = [FDS_1, FDS_2, FDS_3, FDS_4, FDS_5, FDS_6, FDS_7];
+        var aux = 0;
+        for (let index = 0; index < FDSArr.length; index++) {
+            if (FDSArr[index] == true) {
+                aux++;
+            }
+        }
+
+
+        //Teste final pra ver se tá tudo pronto pra executar
+        if (aux != 2) {
+
+            alert("Por favor selecione DUAS missões como custando o dobro. Não mais, não menos.");
+
+        } else {
+
+            //Criação da tabela
+            //Header
+            table = '<table><tr>';
+            table += '<th> Variável </th>'
+            table += '<th> Missão 1 </th>';
+            table += '<th> Missão 2 </th>';
+            table += '<th> Missão 3 </th>';
+            table += '<th> Missão 4 </th>';
+            table += '<th> Missão 5 </th>';
+            table += '<th> Missão 6 </th>';
+            table += '<th> Missão 7 </th>';
+            table += '</tr>';
+
+            DefinirTabela();
+        }
+
+    }
+
+    function DefinirTabela() {
+        if (FDS_1 && FDS_2) {
+            var x1 = ["x", "x", "", "", "", "", ""];
+            var x2 = ["x", "", "x", "x", "", "", ""];
+            var x3 = ["x", "", "x", "", "x", "", ""];
+            var x4 = ["x", "", "x", "", "", "x", ""];
+            var x5 = ["x", "", "x", "", "", "", "x"];
+            var x6 = ["x", "", "", "x", "x", "", ""];
+            var x7 = ["x", "", "", "x", "", "x", ""];
+            var x8 = ["x", "", "", "x", "", "", "x"];
+            var x9 = ["x", "", "", "", "x", "x", ""];
+            var x10 = ["x", "", "", "", "x", "", "x"];
+            var x11 = ["x", "", "", "", "", "x", "x"];
+            var x12 = ["", "x", "x", "x", "", "", ""];
+            var x13 = ["", "x", "x", "", "x", "", ""];
+            var x14 = ["", "x", "x", "", "", "x", ""];
+            var x15 = ["", "x", "x", "", "", "", "x"];
+            var x16 = ["", "x", "", "x", "x", "", ""];
+            var x17 = ["", "x", "", "x", "", "x", ""];
+            var x18 = ["", "x", "", "x", "", "", "x"];
+            var x19 = ["", "x", "", "", "x", "x", ""];
+            var x20 = ["", "x", "", "", "x", "", "x"];
+            var x21 = ["", "x", "", "", "", "x", "x"];
+            var x22 = ["", "", "x", "x", "x", "x", ""];
+            var x23 = ["", "", "x", "", "x", "x", "x"];
+            var x24 = ["", "", "x", "x", "", "x", "x"];
+            var x25 = ["", "", "x", "x", "x", "", "x"];
+            var x26 = ["", "", "", "x", "x", "x", "x"];
+        } else if (FDS_1 && FDS_3) {
+            var x1 = ["x", "", "x", "", "", "", ""];
+            var x2 = ["x", "", "x", "x", "", "", ""];
+            var x3 = ["x", "x", "", "", "x", "", ""];
+            var x4 = ["x", "x", "", "", "", "x", ""];
+            var x5 = ["x", "x", "", "", "", "", "x"];
+            var x6 = ["x", "", "", "x", "x", "", ""];
+            var x7 = ["x", "", "", "x", "", "x", ""];
+            var x8 = ["x", "", "", "x", "", "", "x"];
+            var x9 = ["x", "", "", "", "x", "x", ""];
+            var x10 = ["x", "", "", "", "x", "", "x"];
+            var x11 = ["x", "", "", "", "", "x", "x"];
+            var x12 = ["", "x", "x", "x", "", "", ""];
+            var x13 = ["", "x", "x", "", "x", "", ""];
+            var x14 = ["", "x", "x", "", "", "x", ""];
+            var x15 = ["", "x", "x", "", "", "", "x"];
+            var x16 = ["", "", "x", "x", "x", "", ""];
+            var x17 = ["", "", "x", "x", "", "x", ""];
+            var x18 = ["", "", "x", "x", "", "", "x"];
+            var x19 = ["", "", "x", "", "x", "x", ""];
+            var x20 = ["", "", "x", "", "x", "", "x"];
+            var x21 = ["", "", "x", "", "", "x", "x"];
+            var x22 = ["", "x", "", "x", "x", "x", ""];
+            var x23 = ["", "x", "", "", "x", "x", "x"];
+            var x24 = ["", "x", "", "x", "", "x", "x"];
+            var x25 = ["", "x", "", "x", "x", "", "x"];
+            var x26 = ["", "", "", "x", "x", "x", "x"];
+        } else if (FDS_1 && FDS_4) {
+            var x1 = ["x", "", "", "x", "", "", ""];
+            var x2 = ["x", "x", "x", "", "", "", ""];
+            var x3 = ["x", "x", "", "", "x", "", ""];
+            var x4 = ["x", "x", "", "", "", "x", ""];
+            var x5 = ["x", "x", "", "", "", "", "x"];
+            var x6 = ["x", "", "x", "", "x", "", ""];
+            var x7 = ["x", "", "x", "", "", "x", ""];
+            var x8 = ["x", "", "x", "", "", "", "x"];
+            var x9 = ["x", "", "", "", "x", "x", ""];
+            var x10 = ["x", "", "", "", "x", "", "x"];
+            var x11 = ["x", "", "", "", "", "x", "x"];
+            var x12 = ["", "x", "x", "x", "", "", ""];
+            var x13 = ["", "x", "", "x", "x", "", ""];
+            var x14 = ["", "x", "", "x", "", "x", ""];
+            var x15 = ["", "x", "", "x", "", "", "x"];
+            var x16 = ["", "", "x", "x", "x", "", ""];
+            var x17 = ["", "", "x", "x", "", "x", ""];
+            var x18 = ["", "", "x", "x", "", "", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "x", "", "x"];
+            var x21 = ["", "", "", "x", "", "x", "x"];
+            var x22 = ["", "x", "x", "", "x", "x", ""];
+            var x23 = ["", "x", "", "", "x", "x", "x"];
+            var x24 = ["", "x", "x", "", "", "x", "x"];
+            var x25 = ["", "x", "x", "", "x", "", "x"];
+            var x26 = ["", "", "x", "", "x", "x", "x"];
+        } else if (FDS_1 && FDS_5) {
+            var x1 = ["x", "", "", "", "x", "", ""];
+            var x2 = ["x", "x", "x", "", "", "", ""];
+            var x3 = ["x", "x", "", "x", "", "", ""];
+            var x4 = ["x", "x", "", "", "", "x", ""];
+            var x5 = ["x", "x", "", "", "", "", "x"];
+            var x6 = ["x", "", "x", "x", "", "", ""];
+            var x7 = ["x", "", "x", "", "", "x", ""];
+            var x8 = ["x", "", "x", "", "", "", "x"];
+            var x9 = ["x", "", "", "x", "", "x", ""];
+            var x10 = ["x", "", "", "x", "", "", "x"];
+            var x11 = ["x", "", "", "", "", "x", "x"];
+            var x12 = ["", "x", "x", "", "x", "", ""];
+            var x13 = ["", "x", "", "x", "x", "", ""];
+            var x14 = ["", "x", "", "", "x", "x", ""];
+            var x15 = ["", "x", "", "", "x", "", "x"];
+            var x16 = ["", "", "x", "x", "x", "", ""];
+            var x17 = ["", "", "x", "", "x", "x", ""];
+            var x18 = ["", "", "x", "", "x", "", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "x", "", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["", "x", "x", "x", "", "x", ""];
+            var x23 = ["", "x", "", "x", "", "x", "x"];
+            var x24 = ["", "x", "x", "", "", "x", "x"];
+            var x25 = ["", "x", "x", "x", "", "", "x"];
+            var x26 = ["", "", "x", "x", "", "x", "x"];
+        } else if (FDS_1 && FDS_6) {
+            var x1 = ["x", "", "", "", "", "x", ""];
+            var x2 = ["x", "x", "x", "", "", "", ""];
+            var x3 = ["x", "x", "", "x", "", "", ""];
+            var x4 = ["x", "x", "", "", "x", "", ""];
+            var x5 = ["x", "x", "", "", "", "", "x"];
+            var x6 = ["x", "", "x", "x", "", "", ""];
+            var x7 = ["x", "", "x", "", "x", "", ""];
+            var x8 = ["x", "", "x", "", "", "", "x"];
+            var x9 = ["x", "", "", "x", "x", "", ""];
+            var x10 = ["x", "", "", "x", "", "", "x"];
+            var x11 = ["x", "", "", "", "x", "", "x"];
+            var x12 = ["", "x", "x", "", "", "x", ""];
+            var x13 = ["", "x", "", "x", "", "x", ""];
+            var x14 = ["", "x", "", "", "x", "x", ""];
+            var x15 = ["", "x", "", "", "", "x", "x"];
+            var x16 = ["", "", "x", "x", "", "x", ""];
+            var x17 = ["", "", "x", "", "x", "x", ""];
+            var x18 = ["", "", "x", "", "", "x", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "", "x", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["", "x", "x", "x", "x", "", ""];
+            var x23 = ["", "x", "", "x", "x", "", "x"];
+            var x24 = ["", "x", "x", "", "x", "", "x"];
+            var x25 = ["", "x", "x", "x", "", "", "x"];
+            var x26 = ["", "", "x", "x", "x", "", "x"];
+        } else if (FDS_1 && FDS_7) {
+            var x1 = ["x", "", "", "", "", "", "x"];
+            var x2 = ["x", "x", "x", "", "", "", ""];
+            var x3 = ["x", "x", "", "x", "", "", ""];
+            var x4 = ["x", "x", "", "", "x", "", ""];
+            var x5 = ["x", "x", "", "", "", "x", ""];
+            var x6 = ["x", "", "x", "x", "", "", ""];
+            var x7 = ["x", "", "x", "", "x", "", ""];
+            var x8 = ["x", "", "x", "", "", "x", ""];
+            var x9 = ["x", "", "", "x", "x", "", ""];
+            var x10 = ["x", "", "", "x", "", "x", ""];
+            var x11 = ["x", "", "", "", "x", "x", ""];
+            var x12 = ["", "x", "x", "", "", "", "x"];
+            var x13 = ["", "x", "", "x", "", "", "x"];
+            var x14 = ["", "x", "", "", "x", "", "x"];
+            var x15 = ["", "x", "", "", "", "x", "x"];
+            var x16 = ["", "", "x", "x", "", "", "x"];
+            var x17 = ["", "", "x", "", "x", "", "x"];
+            var x18 = ["", "", "x", "", "", "x", "x"];
+            var x19 = ["", "", "", "x", "x", "", "x"];
+            var x20 = ["", "", "", "x", "", "x", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["", "x", "x", "x", "x", "", ""];
+            var x23 = ["", "x", "", "x", "x", "x", ""];
+            var x24 = ["", "x", "x", "", "x", "x", ""];
+            var x25 = ["", "x", "x", "x", "", "x", ""];
+            var x26 = ["", "", "x", "x", "x", "x", ""];
+        } else if (FDS_2 && FDS_3) {
+            var x1 = ["", "x", "x", "", "", "", ""];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "x", "", "", "x", "", ""];
+            var x4 = ["x", "x", "", "", "", "x", ""];
+            var x5 = ["x", "x", "", "", "", "", "x"];
+            var x6 = ["", "x", "", "x", "x", "", ""];
+            var x7 = ["", "x", "", "x", "", "x", ""];
+            var x8 = ["", "x", "", "x", "", "", "x"];
+            var x9 = ["", "x", "", "", "x", "x", ""];
+            var x10 = ["", "x", "", "", "x", "", "x"];
+            var x11 = ["", "x", "", "", "", "x", "x"];
+            var x12 = ["x", "", "x", "x", "", "", ""];
+            var x13 = ["x", "", "x", "", "x", "", ""];
+            var x14 = ["x", "", "x", "", "", "x", ""];
+            var x15 = ["x", "", "x", "", "", "", "x"];
+            var x16 = ["", "", "x", "x", "x", "", ""];
+            var x17 = ["", "", "x", "x", "", "x", ""];
+            var x18 = ["", "", "x", "x", "", "", "x"];
+            var x19 = ["", "", "x", "", "x", "x", ""];
+            var x20 = ["", "", "x", "", "x", "", "x"];
+            var x21 = ["", "", "x", "", "", "x", "x"];
+            var x22 = ["x", "", "", "x", "x", "x", ""];
+            var x23 = ["x", "", "", "", "x", "x", "x"];
+            var x24 = ["x", "", "", "x", "", "x", "x"];
+            var x25 = ["x", "", "", "x", "x", "", "x"];
+            var x26 = ["", "", "", "x", "x", "x", "x"];
+        } else if (FDS_2 && FDS_4) {
+            var x1 = ["", "x", "", "x", "", "", ""];
+            var x2 = ["", "x", "x", "", "x", "", ""];
+            var x3 = ["x", "x", "", "", "x", "", ""];
+            var x4 = ["x", "x", "", "", "", "x", ""];
+            var x5 = ["x", "x", "", "", "", "", "x"];
+            var x6 = ["", "x", "x", "", "x", "", ""];
+            var x7 = ["", "x", "x", "", "", "x", ""];
+            var x8 = ["", "x", "x", "", "", "", "x"];
+            var x9 = ["", "x", "", "", "x", "x", ""];
+            var x10 = ["", "x", "", "", "x", "", "x"];
+            var x11 = ["", "x", "", "", "", "x", "x"];
+            var x12 = ["x", "", "x", "x", "", "", ""];
+            var x13 = ["x", "", "", "x", "x", "", ""];
+            var x14 = ["x", "", "", "x", "", "x", ""];
+            var x15 = ["x", "", "", "x", "", "", "x"];
+            var x16 = ["", "", "x", "x", "x", "", ""];
+            var x17 = ["", "", "x", "x", "", "x", ""];
+            var x18 = ["", "", "x", "x", "", "", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "x", "", "x"];
+            var x21 = ["", "", "", "x", "", "x", "x"];
+            var x22 = ["x", "", "x", "", "x", "x", ""];
+            var x23 = ["x", "", "", "", "x", "x", "x"];
+            var x24 = ["x", "", "x", "", "", "x", "x"];
+            var x25 = ["x", "", "x", "", "x", "", "x"];
+            var x26 = ["", "", "x", "", "x", "x", "x"];
+        } else if (FDS_2 && FDS_5) {
+            var x1 = ["", "x", "", "", "x", "", ""];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "x", "", "x", "", "", ""];
+            var x4 = ["x", "x", "", "", "", "x", ""];
+            var x5 = ["x", "x", "", "", "", "", "x"];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "x", "", "", "x", ""];
+            var x8 = ["", "x", "x", "", "", "", "x"];
+            var x9 = ["", "x", "", "x", "", "x", ""];
+            var x10 = ["", "x", "", "x", "", "", "x"];
+            var x11 = ["", "x", "", "", "", "x", "x"];
+            var x12 = ["x", "", "x", "", "x", "", ""];
+            var x13 = ["x", "", "", "x", "x", "", ""];
+            var x14 = ["x", "", "", "", "x", "x", ""];
+            var x15 = ["x", "", "", "", "x", "", "x"];
+            var x16 = ["", "", "x", "x", "x", "", ""];
+            var x17 = ["", "", "x", "", "x", "x", ""];
+            var x18 = ["", "", "x", "", "x", "", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "x", "", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "", "x", "x", "", "x", ""];
+            var x23 = ["x", "", "", "x", "", "x", "x"];
+            var x24 = ["x", "", "x", "", "", "x", "x"];
+            var x25 = ["x", "", "x", "x", "", "", "x"];
+            var x26 = ["", "", "x", "x", "", "x", "x"];
+        } else if (FDS_2 && FDS_6) {
+            var x1 = ["", "x", "", "", "", "x", ""];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "x", "", "x", "", "", ""];
+            var x4 = ["x", "x", "", "", "x", "", ""];
+            var x5 = ["x", "x", "", "", "", "", "x"];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "x", "", "x", "", ""];
+            var x8 = ["", "x", "x", "", "", "", "x"];
+            var x9 = ["", "x", "", "x", "x", "", ""];
+            var x10 = ["", "x", "", "x", "", "", "x"];
+            var x11 = ["", "x", "", "", "x", "", "x"];
+            var x12 = ["x", "", "x", "", "", "x", ""];
+            var x13 = ["x", "", "", "x", "", "x", ""];
+            var x14 = ["x", "", "", "", "x", "x", ""];
+            var x15 = ["x", "", "", "", "", "x", "x"];
+            var x16 = ["", "", "x", "x", "", "x", ""];
+            var x17 = ["", "", "x", "", "x", "x", ""];
+            var x18 = ["", "", "x", "", "", "x", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "", "x", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "", "x", "x", "x", "", ""];
+            var x23 = ["x", "", "", "x", "x", "", "x"];
+            var x24 = ["x", "", "x", "", "x", "", "x"];
+            var x25 = ["x", "", "x", "x", "", "", "x"];
+            var x26 = ["", "", "x", "x", "x", "", "x"];
+        } else if (FDS_2 && FDS_7) {
+            var x1 = ["", "x", "", "", "", "", "x"];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "x", "", "x", "", "", ""];
+            var x4 = ["x", "x", "", "", "x", "", ""];
+            var x5 = ["x", "x", "", "", "", "x", ""];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "x", "", "x", "", ""];
+            var x8 = ["", "x", "x", "", "", "x", ""];
+            var x9 = ["", "x", "", "x", "x", "", ""];
+            var x10 = ["", "x", "", "x", "", "x", ""];
+            var x11 = ["", "x", "", "", "x", "x", ""];
+            var x12 = ["x", "", "x", "", "", "", "x"];
+            var x13 = ["x", "", "", "x", "", "", "x"];
+            var x14 = ["x", "", "", "", "x", "", "x"];
+            var x15 = ["x", "", "", "", "", "x", "x"];
+            var x16 = ["", "", "x", "x", "", "", "x"];
+            var x17 = ["", "", "x", "", "x", "", "x"];
+            var x18 = ["", "", "x", "", "", "x", "x"];
+            var x19 = ["", "", "", "x", "x", "", "x"];
+            var x20 = ["", "", "", "x", "", "x", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "", "x", "x", "x", "", ""];
+            var x23 = ["x", "", "", "x", "x", "x", ""];
+            var x24 = ["x", "", "x", "", "x", "x", ""];
+            var x25 = ["x", "", "x", "x", "", "x", ""];
+            var x26 = ["", "", "x", "x", "x", "x", ""];
+        } else if (FDS_3 && FDS_4) {
+            var x1 = ["", "", "x", "x", "", "", ""];
+            var x2 = ["", "x", "x", "", "x", "", ""];
+            var x3 = ["x", "", "x", "", "x", "", ""];
+            var x4 = ["x", "", "x", "", "", "x", ""];
+            var x5 = ["x", "", "x", "", "", "", "x"];
+            var x6 = ["", "x", "x", "", "x", "", ""];
+            var x7 = ["", "x", "x", "", "", "x", ""];
+            var x8 = ["", "x", "x", "", "", "", "x"];
+            var x9 = ["", "", "x", "", "x", "x", ""];
+            var x10 = ["", "", "x", "", "x", "", "x"];
+            var x11 = ["", "", "x", "", "", "x", "x"];
+            var x12 = ["x", "x", "", "x", "", "", ""];
+            var x13 = ["x", "", "", "x", "x", "", ""];
+            var x14 = ["x", "", "", "x", "", "x", ""];
+            var x15 = ["x", "", "", "x", "", "", "x"];
+            var x16 = ["", "x", "", "x", "x", "", ""];
+            var x17 = ["", "x", "", "x", "", "x", ""];
+            var x18 = ["", "x", "", "x", "", "", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "x", "", "x"];
+            var x21 = ["", "", "", "x", "", "x", "x"];
+            var x22 = ["x", "x", "", "", "x", "x", ""];
+            var x23 = ["x", "", "", "", "x", "x", "x"];
+            var x24 = ["x", "x", "", "", "", "x", "x"];
+            var x25 = ["x", "x", "", "", "x", "", "x"];
+            var x26 = ["", "x", "", "", "x", "x", "x"];
+        } else if (FDS_3 && FDS_5) {
+            var x1 = ["", "", "x", "", "x", "", ""];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "", "x", "x", "", "", ""];
+            var x4 = ["x", "", "x", "", "", "x", ""];
+            var x5 = ["x", "", "x", "", "", "", "x"];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "x", "", "", "x", ""];
+            var x8 = ["", "x", "x", "", "", "", "x"];
+            var x9 = ["", "", "x", "x", "", "x", ""];
+            var x10 = ["", "", "x", "x", "", "", "x"];
+            var x11 = ["", "", "x", "", "", "x", "x"];
+            var x12 = ["x", "x", "", "", "x", "", ""];
+            var x13 = ["x", "", "", "x", "x", "", ""];
+            var x14 = ["x", "", "", "", "x", "x", ""];
+            var x15 = ["x", "", "", "", "x", "", "x"];
+            var x16 = ["", "x", "", "x", "x", "", ""];
+            var x17 = ["", "x", "", "", "x", "x", ""];
+            var x18 = ["", "x", "", "", "x", "", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "x", "", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "x", "", "x", "", "x", ""];
+            var x23 = ["x", "", "", "x", "", "x", "x"];
+            var x24 = ["x", "x", "", "", "", "x", "x"];
+            var x25 = ["x", "x", "", "x", "", "", "x"];
+            var x26 = ["", "x", "", "x", "", "x", "x"];
+        } else if (FDS_3 && FDS_6) {
+            var x1 = ["", "", "x", "", "", "x", ""];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "", "x", "x", "", "", ""];
+            var x4 = ["x", "", "x", "", "x", "", ""];
+            var x5 = ["x", "", "x", "", "", "", "x"];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "x", "", "x", "", ""];
+            var x8 = ["", "x", "x", "", "", "", "x"];
+            var x9 = ["", "", "x", "x", "x", "", ""];
+            var x10 = ["", "", "x", "x", "", "", "x"];
+            var x11 = ["", "", "x", "", "x", "", "x"];
+            var x12 = ["x", "x", "", "", "", "x", ""];
+            var x13 = ["x", "", "", "x", "", "x", ""];
+            var x14 = ["x", "", "", "", "x", "x", ""];
+            var x15 = ["x", "", "", "", "", "x", "x"];
+            var x16 = ["", "x", "", "x", "", "x", ""];
+            var x17 = ["", "x", "", "", "x", "x", ""];
+            var x18 = ["", "x", "", "", "", "x", "x"];
+            var x19 = ["", "", "", "x", "x", "x", ""];
+            var x20 = ["", "", "", "x", "", "x", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "x", "", "x", "x", "", ""];
+            var x23 = ["x", "", "", "x", "x", "", "x"];
+            var x24 = ["x", "x", "", "", "x", "", "x"];
+            var x25 = ["x", "x", "", "x", "", "", "x"];
+            var x26 = ["", "x", "", "x", "x", "", "x"];
+        } else if (FDS_3 && FDS_7) {
+            var x1 = ["", "", "x", "", "", "", "x"];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "", "x", "x", "", "", ""];
+            var x4 = ["x", "", "x", "", "x", "", ""];
+            var x5 = ["x", "", "x", "", "", "x", ""];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "x", "", "x", "", ""];
+            var x8 = ["", "x", "x", "", "", "x", ""];
+            var x9 = ["", "", "x", "x", "x", "", ""];
+            var x10 = ["", "", "x", "x", "", "x", ""];
+            var x11 = ["", "", "x", "", "x", "x", ""];
+            var x12 = ["x", "x", "", "", "", "", "x"];
+            var x13 = ["x", "", "", "x", "", "", "x"];
+            var x14 = ["x", "", "", "", "x", "", "x"];
+            var x15 = ["x", "", "", "", "", "x", "x"];
+            var x16 = ["", "x", "", "x", "", "", "x"];
+            var x17 = ["", "x", "", "", "x", "", "x"];
+            var x18 = ["", "x", "", "", "", "x", "x"];
+            var x19 = ["", "", "", "x", "x", "", "x"];
+            var x20 = ["", "", "", "x", "", "x", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "x", "", "x", "x", "", ""];
+            var x23 = ["x", "", "", "x", "x", "x", ""];
+            var x24 = ["x", "x", "", "", "x", "x", ""];
+            var x25 = ["x", "x", "", "x", "", "x", ""];
+            var x26 = ["", "x", "", "x", "x", "x", ""];
+        } else if (FDS_4 && FDS_5) {
+            var x1 = ["", "", "", "x", "x", "", ""];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "", "x", "x", "", "", ""];
+            var x4 = ["x", "", "", "x", "", "x", ""];
+            var x5 = ["x", "", "", "x", "", "", "x"];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "", "x", "", "x", ""];
+            var x8 = ["", "x", "", "x", "", "", "x"];
+            var x9 = ["", "", "x", "x", "", "x", ""];
+            var x10 = ["", "", "x", "x", "", "", "x"];
+            var x11 = ["", "", "", "x", "", "x", "x"];
+            var x12 = ["x", "x", "", "", "x", "", ""];
+            var x13 = ["x", "", "x", "", "x", "", ""];
+            var x14 = ["x", "", "", "", "x", "x", ""];
+            var x15 = ["x", "", "", "", "x", "", "x"];
+            var x16 = ["", "x", "x", "", "x", "", ""];
+            var x17 = ["", "x", "", "", "x", "x", ""];
+            var x18 = ["", "x", "", "", "x", "", "x"];
+            var x19 = ["", "", "x", "", "x", "x", ""];
+            var x20 = ["", "", "x", "", "x", "", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "x", "x", "", "", "x", ""];
+            var x23 = ["x", "", "x", "", "", "x", "x"];
+            var x24 = ["x", "x", "", "", "", "x", "x"];
+            var x25 = ["x", "x", "x", "", "", "", "x"];
+            var x26 = ["", "x", "x", "", "", "x", "x"];
+        } else if (FDS_4 && FDS_6) {
+            var x1 = ["", "", "", "x", "", "x", ""];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "", "x", "x", "", "", ""];
+            var x4 = ["x", "", "", "x", "x", "", ""];
+            var x5 = ["x", "", "", "x", "", "", "x"];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "", "x", "x", "", ""];
+            var x8 = ["", "x", "", "x", "", "", "x"];
+            var x9 = ["", "", "x", "x", "x", "", ""];
+            var x10 = ["", "", "x", "x", "", "", "x"];
+            var x11 = ["", "", "", "x", "x", "", "x"];
+            var x12 = ["x", "x", "", "", "", "x", ""];
+            var x13 = ["x", "", "x", "", "", "x", ""];
+            var x14 = ["x", "", "", "", "x", "x", ""];
+            var x15 = ["x", "", "", "", "", "x", "x"];
+            var x16 = ["", "x", "x", "", "", "x", ""];
+            var x17 = ["", "x", "", "", "x", "x", ""];
+            var x18 = ["", "x", "", "", "", "x", "x"];
+            var x19 = ["", "", "x", "", "x", "x", ""];
+            var x20 = ["", "", "x", "", "", "x", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "x", "x", "", "x", "", ""];
+            var x23 = ["x", "", "x", "", "x", "", "x"];
+            var x24 = ["x", "x", "", "", "x", "", "x"];
+            var x25 = ["x", "x", "x", "", "", "", "x"];
+            var x26 = ["", "x", "x", "", "x", "", "x"];
+        } else if (FDS_4 && FDS_7) {
+            var x1 = ["", "", "", "x", "", "", "x"];
+            var x2 = ["", "x", "x", "x", "", "", ""];
+            var x3 = ["x", "", "x", "x", "", "", ""];
+            var x4 = ["x", "", "", "x", "x", "", ""];
+            var x5 = ["x", "", "", "x", "", "x", ""];
+            var x6 = ["", "x", "x", "x", "", "", ""];
+            var x7 = ["", "x", "", "x", "x", "", ""];
+            var x8 = ["", "x", "", "x", "", "x", ""];
+            var x9 = ["", "", "x", "x", "x", "", ""];
+            var x10 = ["", "", "x", "x", "", "x", ""];
+            var x11 = ["", "", "", "x", "x", "x", ""];
+            var x12 = ["x", "x", "", "", "", "", "x"];
+            var x13 = ["x", "", "x", "", "", "", "x"];
+            var x14 = ["x", "", "", "", "x", "", "x"];
+            var x15 = ["x", "", "", "", "", "x", "x"];
+            var x16 = ["", "x", "x", "", "", "", "x"];
+            var x17 = ["", "x", "", "", "x", "", "x"];
+            var x18 = ["", "x", "", "", "", "x", "x"];
+            var x19 = ["", "", "x", "", "x", "", "x"];
+            var x20 = ["", "", "x", "", "", "x", "x"];
+            var x21 = ["", "", "", "", "x", "x", "x"];
+            var x22 = ["x", "x", "x", "", "x", "", ""];
+            var x23 = ["x", "", "x", "", "x", "x", ""];
+            var x24 = ["x", "x", "", "", "x", "x", ""];
+            var x25 = ["x", "x", "x", "", "", "x", ""];
+            var x26 = ["", "x", "x", "", "x", "x", ""];
+        } else if (FDS_5 && FDS_6) {
+            var x1 = ["", "", "", "", "x", "x", ""];
+            var x2 = ["", "x", "x", "", "x", "", ""];
+            var x3 = ["x", "", "x", "", "x", "", ""];
+            var x4 = ["x", "", "", "x", "x", "", ""];
+            var x5 = ["x", "", "", "", "x", "", "x"];
+            var x6 = ["", "x", "x", "", "x", "", ""];
+            var x7 = ["", "x", "", "x", "x", "", ""];
+            var x8 = ["", "x", "", "", "x", "", "x"];
+            var x9 = ["", "", "x", "x", "x", "", ""];
+            var x10 = ["", "", "x", "", "x", "", "x"];
+            var x11 = ["", "", "", "x", "x", "", "x"];
+            var x12 = ["x", "x", "", "", "", "x", ""];
+            var x13 = ["x", "", "x", "", "", "x", ""];
+            var x14 = ["x", "", "", "x", "", "x", ""];
+            var x15 = ["x", "", "", "", "", "x", "x"];
+            var x16 = ["", "x", "x", "", "", "x", ""];
+            var x17 = ["", "x", "", "x", "", "x", ""];
+            var x18 = ["", "x", "", "", "", "x", "x"];
+            var x19 = ["", "", "x", "x", "", "x", ""];
+            var x20 = ["", "", "x", "", "", "x", "x"];
+            var x21 = ["", "", "", "x", "", "x", "x"];
+            var x22 = ["x", "x", "x", "x", "", "", ""];
+            var x23 = ["x", "", "x", "x", "", "", "x"];
+            var x24 = ["x", "x", "", "x", "", "", "x"];
+            var x25 = ["x", "x", "x", "", "", "", "x"];
+            var x26 = ["", "x", "x", "x", "", "", "x"];
+        } else if (FDS_5 && FDS_7) {
+            var x1 = ["", "", "", "", "x", "", "x"];
+            var x2 = ["", "x", "x", "", "x", "", ""];
+            var x3 = ["x", "", "x", "", "x", "", ""];
+            var x4 = ["x", "", "", "x", "x", "", ""];
+            var x5 = ["x", "", "", "", "x", "x", ""];
+            var x6 = ["", "x", "x", "", "x", "", ""];
+            var x7 = ["", "x", "", "x", "x", "", ""];
+            var x8 = ["", "x", "", "", "x", "x", ""];
+            var x9 = ["", "", "x", "x", "x", "", ""];
+            var x10 = ["", "", "x", "", "x", "x", ""];
+            var x11 = ["", "", "", "x", "x", "x", ""];
+            var x12 = ["x", "x", "", "", "", "", "x"];
+            var x13 = ["x", "", "x", "", "", "", "x"];
+            var x14 = ["x", "", "", "x", "", "", "x"];
+            var x15 = ["x", "", "", "", "", "x", "x"];
+            var x16 = ["", "x", "x", "", "", "", "x"];
+            var x17 = ["", "x", "", "x", "", "", "x"];
+            var x18 = ["", "x", "", "", "", "x", "x"];
+            var x19 = ["", "", "x", "x", "", "", "x"];
+            var x20 = ["", "", "x", "", "", "x", "x"];
+            var x21 = ["", "", "", "x", "", "x", "x"];
+            var x22 = ["x", "x", "x", "x", "", "", ""];
+            var x23 = ["x", "", "x", "x", "", "x", ""];
+            var x24 = ["x", "x", "", "x", "", "x", ""];
+            var x25 = ["x", "x", "x", "", "", "x", ""];
+            var x26 = ["", "x", "x", "x", "", "x", ""];
+        } else {
+            var x1 = ["", "", "", "", "", "x", "x"];
+            var x2 = ["", "x", "x", "", "", "x", ""];
+            var x3 = ["x", "", "x", "", "", "x", ""];
+            var x4 = ["x", "", "", "x", "", "x", ""];
+            var x5 = ["x", "", "", "", "x", "x", ""];
+            var x6 = ["", "x", "x", "", "", "x", ""];
+            var x7 = ["", "x", "", "x", "", "x", ""];
+            var x8 = ["", "x", "", "", "x", "x", ""];
+            var x9 = ["", "", "x", "x", "", "x", ""];
+            var x10 = ["", "", "x", "", "x", "x", ""];
+            var x11 = ["", "", "", "x", "x", "x", ""];
+            var x12 = ["x", "x", "", "", "", "", "x"];
+            var x13 = ["x", "", "x", "", "", "", "x"];
+            var x14 = ["x", "", "", "x", "", "", "x"];
+            var x15 = ["x", "", "", "", "x", "", "x"];
+            var x16 = ["", "x", "x", "", "", "", "x"];
+            var x17 = ["", "x", "", "x", "", "", "x"];
+            var x18 = ["", "x", "", "", "x", "", "x"];
+            var x19 = ["", "", "x", "x", "", "", "x"];
+            var x20 = ["", "", "x", "", "x", "", "x"];
+            var x21 = ["", "", "", "x", "x", "", "x"];
+            var x22 = ["x", "x", "x", "x", "", "", ""];
+            var x23 = ["x", "", "x", "x", "x", "", ""];
+            var x24 = ["x", "x", "", "x", "x", "", ""];
+            var x25 = ["x", "x", "x", "", "x", "", ""];
+            var x26 = ["", "x", "x", "x", "x", "", ""];
+        }
+        var variaveis = [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26];
+
+        //Linhas
+        for (let i = 0; i < variaveis.length; i++) {
+            table += '<tr>';
+            table += '<td> x' + (i + 1) + '</td>';
+            for (let j = 0; j < 7; j++) {
+                table += '<td>' + variaveis[i][j] + '</td>';
+            }
+        }
+        document.getElementById("resultados").innerHTML = "<h1>O supercomputador foi executado. Estes são os resultados: </h1> <h2><br><br> Tabela de possibilidades: </h2>" + table + '<br><br>';
+        //Fim da criação da tabela e inserção na página.
+
+        //Inserção da função objetivo e das restrições
+        document.getElementById("resultados").innerHTML += "<h2> Função objetivo: </h2> min z = x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20 + x21 + x22 + x23 + x24 + x25 <br> <br>";
+        document.getElementById("resultados").innerHTML += "<h2>Restrições: </h2>";
+        document.getElementById("resultados").innerHTML += "Restrição 1: x2 + x3 + x4 + x5 + x6 + x7 + x8 + x15 + x16 + x17 + x18 = " + TF_m1 + "<br>";
+        document.getElementById("resultados").innerHTML += "Restrição 2: x1 + x3 + x4 + x5 + x9 + x10 + x11 + x19 + x20 + x21 = " + TF_m2 + "<br>";
+        document.getElementById("resultados").innerHTML += "Restrição 3: x1 + x2 + x3 + x4 + x6 + x9 + x12 + x13 + x16 + x19 + x22 + x23 = " + TF_m3 + "<br>";
+        document.getElementById("resultados").innerHTML += "Restrição 4: x1 + x2 + x4 + x7 + x10 + x12 + x14 + x17 + x20 + x22 + x24 = " + TF_m4 + "<br>";
+        document.getElementById("resultados").innerHTML += "Restrição 5: x1 + x2 + x3 + x8 + x11 + x13 + x14 + x18 + x21 + x23 + x24 = " + TF_m5 + "<br>";
+        document.getElementById("resultados").innerHTML += "Restrição 6: x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x25 = " + TF_m6 + "<br>";
+        document.getElementById("resultados").innerHTML += "Restrição 7: x15 + x16 + x17 + x18 + x19 + x20 + x21 + x22 + x23 + x24 + x25 = " + TF_m7 + "<br>";
+
+        document.getElementById("resultados").innerHTML += "<h2>Sintaxe do Lindo</h2>        ";
+        document.getElementById("resultados").innerHTML += "min x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20 + x21 + x22 + x23 + x24 + x25 <br> <br>";
+        document.getElementById("resultados").innerHTML += "s.t. <br>";
+        document.getElementById("resultados").innerHTML += " x2 + x3 + x4 + x5 + x6 + x7 + x8 + x15 + x16 + x17 + x18 = " + TF_m1 + "<br>";
+        document.getElementById("resultados").innerHTML += " x1 + x3 + x4 + x5 + x9 + x10 + x11 + x19 + x20 + x21 = " + TF_m2 + "<br>";
+        document.getElementById("resultados").innerHTML += " x1 + x2 + x3 + x4 + x6 + x9 + x12 + x13 + x16 + x19 + x22 + x23 = " + TF_m3 + "<br>";
+        document.getElementById("resultados").innerHTML += " x1 + x2 + x4 + x7 + x10 + x12 + x14 + x17 + x20 + x22 + x24 = " + TF_m4 + "<br>";
+        document.getElementById("resultados").innerHTML += " x1 + x2 + x3 + x8 + x11 + x13 + x14 + x18 + x21 + x23 + x24 = " + TF_m5 + "<br>";
+        document.getElementById("resultados").innerHTML += " x5 + x6 + x7 + x8 + x9 + x10 + x11 + x12 + x13 + x14 + x25 = " + TF_m6 + "<br>";
+        document.getElementById("resultados").innerHTML += " x15 + x16 + x17 + x18 + x19 + x20 + x21 + x22 + x23 + x24 + x25 = " + TF_m7 + "<br>";
+        document.getElementById("resultados").innerHTML += "end <br>";
+        document.getElementById("resultados").innerHTML += "gin 15";
+
+    }
+</script>
